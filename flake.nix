@@ -62,7 +62,7 @@
         nginxConfig = ./nginx.conf;
 
         # Docker image with Nginx
-        dockerImage = pkgs.dockerTools.streamLayeredImage {
+        dockerImage = pkgs.dockerTools.buildImage {
           name = "astro-cactus";
           tag = "latest";
 
@@ -71,32 +71,33 @@
             nginx
           ];
 
-          extraCommands = ''
+          runAsRoot = ''
+            #!${pkgs.runtimeShell}
             # Create necessary directories
-            mkdir -p var/www/html
-            mkdir -p var/log/nginx
-            mkdir -p var/cache/nginx
-            mkdir -p etc/nginx
-            mkdir -p tmp
+            mkdir -p /var/www/html
+            mkdir -p /var/log/nginx
+            mkdir -p /var/cache/nginx
+            mkdir -p /etc/nginx
+            mkdir -p /tmp
 
             # Copy Astro build output
-            cp -r ${astroSite}/* var/www/html/
+            cp -r ${astroSite}/* /var/www/html/
 
             # Copy nginx config and mime.types
-            cp ${nginxConfig} etc/nginx/nginx.conf
-            cp ${pkgs.nginx}/conf/mime.types etc/nginx/mime.types
+            cp ${nginxConfig} /etc/nginx/nginx.conf
+            cp ${pkgs.nginx}/conf/mime.types /etc/nginx/mime.types
 
             # Create nginx user and group, and nobody user
-            echo "nginx:x:101:101:nginx:/var/cache/nginx:/bin/false" >> etc/passwd
-            echo "nginx:x:101:" >> etc/group
-            echo "nobody:x:65534:65534:nobody:/nonexistent:/bin/false" >> etc/passwd
-            echo "nogroup:x:65534:" >> etc/group
+            echo "nginx:x:101:101:nginx:/var/cache/nginx:/bin/false" >> /etc/passwd
+            echo "nginx:x:101:" >> /etc/group
+            echo "nobody:x:65534:65534:nobody:/nonexistent:/bin/false" >> /etc/passwd
+            echo "nogroup:x:65534:" >> /etc/group
 
-            # Set permissions (without chown which doesn't work in Docker build)
-            chmod -R 755 var/www/html
-            chmod -R 755 var/log/nginx
-            chmod -R 755 var/cache/nginx
-            chmod -R 755 tmp
+            # Set permissions
+            chmod -R 755 /var/www/html
+            chmod -R 755 /var/log/nginx
+            chmod -R 755 /var/cache/nginx
+            chmod -R 755 /tmp
           '';
 
           config = {
@@ -112,8 +113,6 @@
             };
             WorkingDir = "/";
           };
-
-          maxLayers = 125;
         };
 
       in

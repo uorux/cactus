@@ -32,8 +32,11 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          # streamLayeredImage produces an executable script that streams to docker
-          nix run .#dockerImage | docker load
+          # Build the Docker image tarball
+          nix build .#dockerImage
+          
+          # Load the image into Docker
+          docker load < result
           
           # Tag the image for Gitea registry
           docker tag astro-cactus:latest gitea.rooty.dev/jrt/cactus:latest
