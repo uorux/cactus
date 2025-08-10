@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+
+# Node modules and package manager files
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs (we build inside Nix)
+dist/
+.output/
+
+# Development files
+.astro
+.cache
+.env*
+.DS_Store
+
+# Editor directories
+.vscode
+.idea
+
+# Nix build results
+result
+result-*
+
+# Documentation
+README.md
+docs/
+
+# Test files
+*.test.*
+*.spec.*
+
+# Temporary files
+*.tmp
+*.swp
+*~
