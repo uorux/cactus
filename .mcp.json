@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "language-server": {
+      "type": "stdio",
+      "command": "/home/jrt/Documents/ai/mcp-language-server/mcp-language-server",
+      "args": [
+        "--workspace",
+        "/home/jrt/Documents/personal/cactus",
+        "--lsp",
+        "nixd"
+      ],
+      "env": {
+        "LOG_LEVEL": "DEBUG"
+      }
+    }
+  }
+}
