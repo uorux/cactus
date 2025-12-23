@@ -8,3 +8,4 @@ I recently "vibe coded" an app to help manage my job search. Here are some thing
 - Always use a statically typed programming language, and make the AI typecheck itself when it is done
 - Use git extensively: being able to roll back is essential
 - Add tests wherever possible
+- Test pipecleaner for github actions
